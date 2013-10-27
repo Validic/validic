@@ -44,6 +44,7 @@ module Validic
       @api_url        = options[:api_url]       || Validic.api_url
       @api_version    = options[:api_version]   || Validic.api_version || 'v1'
       @access_token   = options[:access_token]  || Validic.access_token
+      @organization_id   = options[:organization_id]  || Validic.organization_id
     end
 
     ##

@@ -24,7 +24,7 @@ Or install it yourself as:
 ```ruby
     require 'validic'
 
-    # If your using Rails 3+
+    # If you're using Rails 3+
     # config/initializers/validic.rb
     Validic.configure do |config|
       config.api_url        = 'https://api.validic.com'

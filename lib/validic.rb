@@ -8,7 +8,7 @@ directory = File.expand_path(File.dirname(__FILE__))
 module Validic
 
   class << self
-    attr_accessor :api_url, :api_version, :access_token
+    attr_accessor :api_url, :api_version, :access_token, :organization_id
 
     ##
     # Configure default
@@ -26,6 +26,7 @@ module Validic
       self.api_url      ||= 'https://api.validic.com'
       self.api_version  ||= 'v1'
       self.access_token ||= 'DEMO_KEY'
+      self.organization_id ||= "EXAMPLE_ORGANIZATION"
     end
   end
 

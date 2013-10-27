@@ -19,7 +19,7 @@ module Validic
     # 
     # @return [Hashie::Mash] with list of Activity
     def get_activities(options={})
-      organization_id = options[:organization_id]
+      organization_id = options[:organization_id] || Validic.organization_id
       user_id = options[:user_id]
       options = {
         access_token: options[:access_token],
