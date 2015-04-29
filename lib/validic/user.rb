@@ -99,5 +99,10 @@ module Validic
       response = delete("/#{Validic.api_version}/organizations/#{organization_id}/users.json", options)
       response
     end
+    
+      def refresh_token(options = {})
+        response = get_request(:refresh_token, options)
+        Validic::User.new(response['user'])
+      end
   end
 end
