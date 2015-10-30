@@ -1,7 +1,10 @@
 require 'validic/client'
 
 module Validic
-  BASE_URL = "https://api.validic.com/v1"
+  API_URL     = 'https://api.validic.com'
+  API_VERSION = 'v1'
+  BASE_URL    = "#{API_URL}/#{API_VERSION}"
+
   class << self
     attr_accessor :api_url,
       :api_version,
@@ -18,3 +21,7 @@ module Validic
     end
   end
 end
+
+Validic.api_url     = Validic::API_URL
+Validic.api_version = Validic::API_VERSION
+

@@ -44,10 +44,10 @@ module Validic
     #
     # @params options[Hash]
     def initialize(options={})
-      @api_url          = options.fetch(:api_url, 'https://api.validic.com')
-      @api_version      = options.fetch(:api_version, 'v1')
-      @access_token     = options.fetch(:access_token, Validic.access_token)
-      @organization_id  = options.fetch(:organization_id, Validic.organization_id)
+      @api_url          = options[:api_url]         || Validic.api_url
+      @api_version      = options[:api_version]     || Validic.api_version
+      @access_token     = options[:access_token]    || Validic.access_token
+      @organization_id  = options[:organization_id] || Validic.organization_id
     end
 
     ##
@@ -71,13 +71,6 @@ module Validic
         content_type: 'application/json',
         user_agent: "Ruby Gem by Validic #{Validic::VERSION}"
       }
-    end
-
-    def reload_config
-      Validic.api_url = api_url
-      Validic.api_version = api_version
-      Validic.access_token = access_token
-      Validic.organization_id = organization_id
     end
   end
 end
