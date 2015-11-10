@@ -15,6 +15,16 @@ module Validic
         get(path, options)
       end
 
+      def pull_via_url(path, options = {})
+        return nil if path.nil?
+        if path.include?("page")
+          resp = get(path, options)
+          build_response_attr(resp)
+        else
+          "Page number required"
+        end
+      end
+
       private
 
       def get_request(type, options = {})
