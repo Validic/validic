@@ -2,13 +2,13 @@
   "summary": {
     "status": 200,
     "message": "OK",
-    "results": 3,
+    "results": 2,
     "start_date": "2013-03-27T00:00:00+00:00",
     "end_date": "2013-03-27T23:59:59+00:00",
     "offset": 0,
     "limit": 100,
-    "previous": null,
-    "next": "https://api.validic.com/v1/organizations/1/routine.json?access_token=e7aefafcac801b320f79fafcf46d3090b6b5fda9e71ddb374c9c1223a5843adc&start_date=2013-01-01&page=2",
+    "previous": "https://api.validic.com/v1/organizations/1/routine.json?access_token=1&start_date=2013-01-01&page=1",
+    "next": null,
     "params": {
       "start_date": null,
       "end_date": null,
@@ -18,29 +18,29 @@
   },"routine": [
     {
     "_id": "51552cdbfded0807c4000062",
-    "timestamp": "2013-03-10T07:12:16+00:00",
+    "timestamp": "2013-03-27T07:12:16+00:00",
     "utc_offset": "+00:00",
-    "steps": 9355,
-    "distance": 7290.33,
-    "floors": 23,
+    "steps": 6412,
+    "distance": 4589.21,
+    "floors": 16,
     "elevation": 3.4,
     "calories_burned": 2874,
     "source": "sample_app",
     "source_name": "Sample App",
-    "last_updated": "2013-03-10T07:12:16+00:00"
+    "last_updated": "2013-03-27T07:12:16+00:00"
   },
   {
     "_id": "51552cdbfded0807c4000062",
-    "timestamp": "2013-03-10T07:12:16+00:00",
+    "timestamp": "2013-03-27T07:12:16+00:00",
     "utc_offset": "+00:00",
-    "steps": 9355,
-    "distance": 7290.33,
-    "floors": 23,
+    "steps": 3333,
+    "distance": 3422.33,
+    "floors": 10,
     "elevation": 3.4,
-    "calories_burned": 2874,
+    "calories_burned": 1532,
     "source": "sample_app",
     "source_name": "Sample App",
-    "last_updated": "2013-03-10T07:12:16+00:00"
+    "last_updated": "2013-03-27T07:12:16+00:00"
   }
   ]
 }
