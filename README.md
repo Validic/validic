@@ -112,7 +112,8 @@ client.get_routine(start_date: '2015-01-01T00:00:00+00:00')
 
 Pull data by using the next or previous urls
 ```ruby
-client.pull_via_url("next_url/previous_url")
+response = client.get_routine(start_date: '2015-01-01')
+client.pull_via_url(response.summary.next)
 ```
 
 ### More Examples ###
