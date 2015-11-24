@@ -40,6 +40,19 @@ describe Validic::REST::Nutrition do
           .to have_been_made
       end
     end
+    context 'paginated true' do
+      before do
+        stub_get("/organizations/1/nutrition.json")
+          .with(query: { access_token: '1', paginated: "true" })
+          .to_return(body: fixture('nutritions.json'),
+        headers: { content_type: 'application/json; charset=utf-8' })
+      end
+      it 'returns a Validic Response' do
+        nutritions_records = client.get_nutrition(access_token: '1', paginated: "true")
+        expect(nutritions_records).to be_a Validic::Response
+        expect(nutritions_records.summary.limit).to eq 2_000
+      end
+    end
   end
 
   describe '#create_nutrition' do

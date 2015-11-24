@@ -35,6 +35,19 @@ describe Validic::REST::Routine do
         expect(a_get('/organizations/1/users/1/routine.json').with(query: { access_token: '1' })).to have_been_made
       end
     end
+    context 'paginated true' do
+      before do
+        stub_get("/organizations/1/routine.json")
+          .with(query: { access_token: '1', paginated: "true" })
+          .to_return(body: fixture('routines.json'),
+        headers: { content_type: 'application/json; charset=utf-8' })
+      end
+      it 'returns a Validic Response' do
+        routine_records = client.get_routine(access_token: '1', paginated: "true")
+        expect(routine_records).to be_a Validic::Response
+        expect(routine_records.summary.limit).to eq 2_000
+      end
+    end
   end
 
   describe '#create_routine' do
