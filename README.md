@@ -457,6 +457,11 @@ client.delete_tobacco_cessation(user_id: 'VALIDIC_USER_ID', _id: 'VALIDIC_ACTIVI
 client.create_fitness(user_id: 'VALIDIC_USER_ID', activity_id: 'UNIQUE_ACTIVITY_ID', extras: "{\"stars\": 3}")
 ```
 
+##### Get an endpoints first 2000 endpoint records
+``` ruby
+client.get_routine(start_date: '2015-01-01', paginated: "true")
+```
+
 ##   [Latest Records](https://validic.com/api/bulkdata/#latest)
 
 ###### You can also pass an options hash to filter latest results
