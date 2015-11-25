@@ -36,6 +36,19 @@ describe Validic::REST::Weight do
         expect(a_get('/organizations/1/users/1/weight.json').with(query: { access_token: '1' })).to have_been_made
       end
     end
+    context 'paginated true' do
+      before do
+        stub_get("/organizations/1/weight.json")
+          .with(query: { access_token: '1', paginated: "true" })
+          .to_return(body: fixture('weights.json'),
+        headers: { content_type: 'application/json; charset=utf-8' })
+      end
+      it 'returns a Validic Response' do
+        weights = client.get_weight(access_token: '1', paginated: "true")
+        expect(weights).to be_a Validic::Response
+        expect(weights.summary.limit).to eq 2_000
+      end
+    end
   end
 
   describe '#create_weight' do

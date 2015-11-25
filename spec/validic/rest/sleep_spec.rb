@@ -36,6 +36,19 @@ describe Validic::REST::Sleep do
         expect(a_get('/organizations/1/users/1/sleep.json').with(query: { access_token: '1' })).to have_been_made
       end
     end
+    context 'paginated true' do
+      before do
+        stub_get("/organizations/1/sleep.json")
+          .with(query: { access_token: '1', paginated: "true" })
+          .to_return(body: fixture('sleeps.json'),
+        headers: { content_type: 'application/json; charset=utf-8' })
+      end
+      it 'returns a Validic Response' do
+        sleep_records = client.get_sleep(access_token: '1', paginated: "true")
+        expect(sleep_records).to be_a Validic::Response
+        expect(sleep_records.summary.limit).to eq 2_000
+      end
+    end
   end
 
   describe '#create_sleep' do

@@ -37,6 +37,19 @@ describe Validic::REST::Diabetes do
         expect(a_get('/organizations/1/users/1/diabetes.json').with(query: { access_token: '1' })).to have_been_made
       end
     end
+    context 'paginated true' do
+      before do
+        stub_get("/organizations/1/diabetes.json")
+          .with(query: { access_token: '1', paginated: "true" })
+          .to_return(body: fixture('diabetes_records.json'),
+        headers: { content_type: 'application/json; charset=utf-8' })
+      end
+      it 'returns a Validic Response' do
+        diabetes_record = client.get_diabetes(access_token: '1', paginated: "true")
+        expect(diabetes_record).to be_a Validic::Response
+        expect(diabetes_record.summary.limit).to eq 2_000
+      end
+    end
   end
 
   describe '#create_diabetes' do

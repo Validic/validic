@@ -37,6 +37,19 @@ describe Validic::REST::TobaccoCessation do
         expect(a_get('/organizations/1/users/1/tobacco_cessation.json').with(query: { access_token: '1' })).to have_been_made
       end
     end
+    context 'paginated true' do
+      before do
+        stub_get("/organizations/1/tobacco_cessation.json")
+          .with(query: { access_token: '1', paginated: "true" })
+          .to_return(body: fixture('tobacco_cessations.json'),
+        headers: { content_type: 'application/json; charset=utf-8' })
+      end
+      it 'returns a Validic Response' do
+        tobacco_cessation = client.get_tobacco_cessation(access_token: '1', paginated: "true")
+        expect(tobacco_cessation).to be_a Validic::Response
+        expect(tobacco_cessation.summary.limit).to eq 2_000
+      end
+    end
   end
 
   describe '#create_tobacco_cessation' do
