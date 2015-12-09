@@ -6,7 +6,7 @@ describe Validic::REST::Users do
   describe '#get_users' do
     before do
       stub_get("/organizations/1/users.json")
-        .with(query: { access_token: '1' })
+        .with(query: { access_token: '1', organization_id: '1' })
         .to_return(body: fixture('users.json'),
                    headers: { content_type: 'application/json; charset=utf-8' })
     end
@@ -16,20 +16,20 @@ describe Validic::REST::Users do
     end
     it 'makes a users request to the correct url' do
       client.get_users
-      expect(a_get('/organizations/1/users.json').with(query: { access_token: '1' })).to have_been_made
+      expect(a_get('/organizations/1/users.json').with(query: { access_token: '1', organization_id: '1' })).to have_been_made
     end
   end
 
   describe '#provision_user' do
     before do
       stub_post('/organizations/1/users.json')
-        .with(body: { user: { uid: '123467890' }, access_token: '1' }.to_json)
+        .with(body: { user: { uid: '123467890' }, access_token: '1', organization_id: '1' }.to_json)
         .to_return(body: fixture('user.json'), headers: { content_type: 'application/json; charset=utf-8' })
     end
     it 'requests the correct resource' do
       client.provision_user(uid: '123467890')
       expect(a_post('/organizations/1/users.json')
-        .with(body: { user: { uid: '123467890' }, access_token: '1' }.to_json))
+        .with(body: { user: { uid: '123467890' }, access_token: '1', organization_id: '1' }.to_json))
         .to have_been_made
     end
     it 'returns a User' do
@@ -40,7 +40,7 @@ describe Validic::REST::Users do
     context 'with optional profile' do
       before do
         stub_post('/organizations/1/users.json')
-          .with(body: { user: { uid: '123467890', profile: { gender: 'M' } }, access_token: '1' }.to_json)
+          .with(body: { user: { uid: '123467890', profile: { gender: 'M' } }, access_token: '1', organization_id: '1' }.to_json)
           .to_return(body: fixture('user_with_profile.json'), headers: { content_type: 'application/json; charset=utf-8' })
       end
       it 'returns a User with profile' do
@@ -53,16 +53,30 @@ describe Validic::REST::Users do
     end
   end
 
+  describe '#provision_user to organization 2' do
+    before do
+      stub_post('/organizations/2/users.json')
+        .with(body: { user: { uid: '123467890' }, access_token: "2", organization_id: "2" }.to_json)
+        .to_return(body: fixture('user2.json'), headers: { content_type: 'application/json; charset=utf-8' })
+    end
+    it 'registers a user to the appropriate organization' do
+      user = client.provision_user(uid: '123467890', access_token: "2", organization_id: "2")
+      expect(user.access_token).to eq '2'
+      expect(client.organization_id).to eq '2'
+      expect(client.access_token).to eq '2'
+    end
+  end
+
   describe '#update_user' do
     before do
       stub_put('/organizations/1/users/1.json')
-        .with(body: { user: { uid: 'abcde' }, access_token: '1' }.to_json)
+        .with(body: { user: { uid: 'abcde' }, access_token: '1', organization_id: '1' }.to_json)
         .to_return(body: fixture('updated_user.json'), headers: { content_type: 'application/json; charset=utf-8' })
     end
     it 'requests the correct resource' do
       client.update_user(user_id: '1', uid: 'abcde')
       expect(a_put('/organizations/1/users/1.json')
-        .with(body: { user: { uid: 'abcde' }, access_token: '1' }.to_json))
+        .with(body: { user: { uid: 'abcde' }, access_token: '1', organization_id: '1' }.to_json))
         .to have_been_made
     end
     it 'returns a User' do
@@ -73,7 +87,7 @@ describe Validic::REST::Users do
     context 'with optional profile' do
       before do
         stub_put('/organizations/1/users/1.json')
-          .with(body: { user: { uid: '123467890', profile: { gender: 'M' } }, access_token: '1' }.to_json)
+          .with(body: { user: { uid: '123467890', profile: { gender: 'M' } }, access_token: '1', organization_id: '1' }.to_json)
           .to_return(body: fixture('user_with_profile.json'), headers: { content_type: 'application/json; charset=utf-8' })
       end
       it 'returns a User with profile' do
@@ -98,13 +112,13 @@ describe Validic::REST::Users do
 
   describe '#me' do
     before do
-      stub_get('/me.json').with(query: { access_token: '1', authentication_token: 'auth_token' })
+      stub_get('/me.json').with(query: { access_token: '1', authentication_token: 'auth_token', organization_id: '1' })
         .to_return(body: fixture('me.json'),
             headers: { content_type: 'application/json; charset=utf-8' })
     end
     it 'makes a request to the correct resource' do
       client.me(authentication_token: 'auth_token')
-      expect(a_get('/me.json').with(query: { access_token: '1', authentication_token: 'auth_token' }))
+      expect(a_get('/me.json').with(query: { access_token: '1', authentication_token: 'auth_token', organization_id: '1' }))
         .to have_been_made
     end
     it 'returns a String' do
@@ -116,13 +130,13 @@ describe Validic::REST::Users do
   describe '#suspend_user' do
     before do
       stub_put('/organizations/1/users/1.json')
-        .with(body: { suspend: '1', access_token: '1' }.to_json)
+        .with(body: { suspend: '1', access_token: '1', organization_id: '1' }.to_json)
         .to_return(status: 200)
     end
     it 'makes a request to the correct resource' do
       client.suspend_user(user_id: '1')
       expect(a_put('/organizations/1/users/1.json')
-        .with(body: { suspend: '1', access_token: '1' }.to_json))
+        .with(body: { suspend: '1', access_token: '1', organization_id: '1' }.to_json))
         .to have_been_made
     end
     it 'returns true' do
@@ -134,13 +148,13 @@ describe Validic::REST::Users do
   describe '#unsuspend_user' do
     before do
       stub_put('/organizations/1/users/1.json')
-        .with(body: { suspend: '0', access_token: '1' }.to_json)
+        .with(body: { suspend: '0', access_token: '1', organization_id: '1' }.to_json)
         .to_return(status: 200)
     end
     it 'makes a request to the correct resource' do
       client.unsuspend_user(user_id: '1')
       expect(a_put('/organizations/1/users/1.json')
-        .with(body: { suspend: '0', access_token: '1' }.to_json))
+        .with(body: { suspend: '0', access_token: '1', organization_id: '1' }.to_json))
         .to have_been_made
     end
     it 'returns true' do
@@ -152,14 +166,14 @@ describe Validic::REST::Users do
   describe '#refresh_token' do
     before do
       stub_get('/organizations/1/users/1/refresh_token.json')
-        .with(query: { access_token: '1' })
+        .with(query: { access_token: '1', organization_id: '1' })
         .to_return(body: fixture('refresh_token.json'),
                    headers: { content_type: 'application/json; charset=utf-8' })
     end
     it 'makes a request to the correct resource' do
       client.refresh_token(user_id: '1')
       expect(a_get('/organizations/1/users/1/refresh_token.json')
-        .with(query: { access_token: '1' }))
+        .with(query: { access_token: '1', organization_id: '1' }))
         .to have_been_made
     end
     it 'returns a User' do

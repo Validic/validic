@@ -6,7 +6,7 @@ describe Validic::REST::Organizations do
   describe "#get_organization" do
     before do
       stub_get('/organizations/1.json')
-        .with(query: { access_token: '1' })
+        .with(query: { access_token: '1', organization_id: '1' })
         .to_return(body: fixture('organizations.json'),
       headers: { content_type: 'application/json; charset=utf-8' })
       @org = client.get_organization
@@ -16,7 +16,7 @@ describe Validic::REST::Organizations do
     end
     it 'creates the correct url' do
       expect(a_get('/organizations/1.json')
-        .with(query: { access_token: '1' }))
+        .with(query: { access_token: '1', organization_id: '1' }))
         .to have_been_made
     end
   end

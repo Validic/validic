@@ -7,7 +7,7 @@ describe Validic::REST::Routine do
     context 'no user_id given' do
       before do
         stub_get('/organizations/1/routine.json')
-          .with(query: { access_token: '1' })
+          .with(query: { access_token: '1', organization_id: '1' })
           .to_return(body: fixture('routines.json'),
         headers: { content_type: 'application/json; charset=utf-8' })
       end
@@ -17,13 +17,13 @@ describe Validic::REST::Routine do
       end
       it 'makes a routine request to the correct url' do
         client.get_routine
-        expect(a_get('/organizations/1/routine.json').with(query: { access_token: '1' })).to have_been_made
+        expect(a_get('/organizations/1/routine.json').with(query: { access_token: '1', organization_id: '1' })).to have_been_made
       end
     end
     context 'with user_id' do
       before do
         stub_get('/organizations/1/users/1/routine.json')
-          .with(query: { access_token: '1' })
+          .with(query: { access_token: '1', organization_id: '1' })
           .to_return(body: fixture('routines.json'), headers: { content_type: 'application/json; charset=utf-8' })
       end
       it 'returns a Response' do
@@ -32,7 +32,41 @@ describe Validic::REST::Routine do
       end
       it 'makes a routine request to the correct url' do
         client.get_routine(user_id: '1')
-        expect(a_get('/organizations/1/users/1/routine.json').with(query: { access_token: '1' })).to have_been_made
+        expect(a_get('/organizations/1/users/1/routine.json').with(query: { access_token: '1', organization_id: '1' })).to have_been_made
+      end
+    end
+  end
+
+  describe "#get_routine with another organization parameter" do
+    context 'no user_id given' do
+      before do
+        stub_get('/organizations/2/routine.json')
+          .with(query: { access_token: '2', organization_id: '2' })
+          .to_return(body: fixture('routines.json'),
+        headers: { content_type: 'application/json; charset=utf-8' })
+      end
+      it 'returns a validic response object' do
+        routine = client.get_routine(access_token: '2', organization_id: '2')
+        expect(routine).to be_a Validic::Response
+      end
+      it 'makes a routine request to the correct url' do
+        client.get_routine(access_token: '2', organization_id: '2')
+        expect(a_get('/organizations/2/routine.json').with(query: { access_token: '2', organization_id: '2' })).to have_been_made
+      end
+    end
+    context 'with user_id' do
+      before do
+        stub_get('/organizations/2/users/1/routine.json')
+          .with(query: { access_token: '2', organization_id: '2' })
+          .to_return(body: fixture('routines.json'), headers: { content_type: 'application/json; charset=utf-8' })
+      end
+      it 'returns a Response' do
+        routine = client.get_routine(user_id: '1', access_token: '2', organization_id: '2')
+        expect(routine).to be_a Validic::Response
+      end
+      it 'makes a routine request to the correct url' do
+        client.get_routine(user_id: '1',access_token: '2', organization_id: '2')
+        expect(a_get('/organizations/2/users/1/routine.json').with(query: { access_token: '2', organization_id: '2' })).to have_been_made
       end
     end
   end
@@ -41,7 +75,7 @@ describe Validic::REST::Routine do
     before do
       stub_post("/organizations/1/users/1/routine.json")
         .with(body: { routine: { timestamp: '2013-03-10T07:12:16+00:00', activity_id: '12345' },
-                      access_token: '1' }.to_json)
+                      access_token: '1', organization_id: '1' }.to_json)
         .to_return(body: fixture('routine.json'),
           headers: { content_type: 'application/json; charset=utf-8'} )
     end
@@ -49,8 +83,9 @@ describe Validic::REST::Routine do
       client.create_routine(user_id: '1', timestamp: '2013-03-10T07:12:16+00:00', activity_id: '12345')
       expect(a_post('/organizations/1/users/1/routine.json')
         .with(body: { routine: { timestamp: '2013-03-10T07:12:16+00:00',
-                                   activity_id: '12345' },
-                      access_token: '1' }.to_json)).to have_been_made
+                                 activity_id: '12345' },
+                                 access_token: '1',
+                                 organization_id: '1' }.to_json)).to have_been_made
     end
     it 'returns a routine' do
       routine = client.create_routine(user_id: '1', timestamp: '2013-03-10T07:12:16+00:00', activity_id: '12345')
@@ -63,7 +98,8 @@ describe Validic::REST::Routine do
     before do
       stub_put("/organizations/1/users/1/routine/51552cddfded0807c4000096.json")
         .with(body: { routine: { timestamp: '2013-03-10T07:12:16+00:00' },
-                                   access_token: '1' }.to_json)
+                      access_token: '1',
+                      organization_id: '1' }.to_json)
         .to_return(body: fixture('routine.json'),
                    headers: {content_type: 'application/json; charset=utf-8'})
     end
@@ -71,7 +107,8 @@ describe Validic::REST::Routine do
       client.update_routine(user_id: '1', _id: '51552cddfded0807c4000096', timestamp: '2013-03-10T07:12:16+00:00')
       expect(a_put('/organizations/1/users/1/routine/51552cddfded0807c4000096.json')
         .with(body: { routine: { timestamp: '2013-03-10T07:12:16+00:00' },
-                      access_token: '1' }.to_json)).to have_been_made
+                      access_token: '1',
+                      organization_id: '1' }.to_json)).to have_been_made
     end
     it 'returns a routine' do
       routine = client.update_routine(user_id: '1', _id: '51552cddfded0807c4000096', timestamp: '2013-03-10T07:12:16+00:00')
@@ -96,7 +133,7 @@ describe Validic::REST::Routine do
     context 'with user_id' do
       before do
         stub_get("/organizations/1/users/2/routine/latest.json").
-          with(query: { access_token: '1' }).
+          with(query: { access_token: '1', organization_id: '1' }).
           to_return(body: fixture('routines.json'),
                     headers: { content_type: 'application/json; charset=utf-8' })
       end
@@ -106,13 +143,13 @@ describe Validic::REST::Routine do
       end
       it 'builds a latest url' do
         client.latest_routine(user_id: '2')
-        expect(a_get('/organizations/1/users/2/routine/latest.json').with(query: { access_token: '1' })).to have_been_made
+        expect(a_get('/organizations/1/users/2/routine/latest.json').with(query: { access_token: '1', organization_id: '1' })).to have_been_made
       end
     end
     context 'without user_id' do
       before do
         stub_get("/organizations/1/routine/latest.json").
-          with(query: { access_token: '1' }).
+          with(query: { access_token: '1', organization_id: '1' }).
           to_return(body: fixture('routines.json'),
                     headers: { content_type: 'application/json; charset=utf-8' })
       end
@@ -122,7 +159,7 @@ describe Validic::REST::Routine do
       end
       it 'builds a latest url' do
         client.latest_routine
-        expect(a_get('/organizations/1/routine/latest.json').with(query: { access_token: '1' })).to have_been_made
+        expect(a_get('/organizations/1/routine/latest.json').with(query: { access_token: '1', organization_id: '1' })).to have_been_made
       end
     end
   end

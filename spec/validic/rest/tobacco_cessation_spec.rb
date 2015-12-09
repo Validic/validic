@@ -8,7 +8,7 @@ describe Validic::REST::TobaccoCessation do
     context 'no user_id given' do
       before do
         stub_get("/organizations/1/tobacco_cessation.json")
-          .with(query: { access_token: '1' })
+          .with(query: { access_token: '1', organization_id: '1' })
           .to_return(body: fixture('tobacco_cessations.json'),
         headers: { content_type: 'application/json; charset=utf-8' })
       end
@@ -18,13 +18,13 @@ describe Validic::REST::TobaccoCessation do
       end
       it 'makes a tobacco_cessation request to the correct url' do
         client.get_tobacco_cessation
-        expect(a_get('/organizations/1/tobacco_cessation.json').with(query: { access_token: '1' })).to have_been_made
+        expect(a_get('/organizations/1/tobacco_cessation.json').with(query: { access_token: '1', organization_id: '1' })).to have_been_made
       end
     end
     context 'with user_id' do
       before do
         stub_get("/organizations/1/users/1/tobacco_cessation.json")
-          .with(query: { access_token: '1' })
+          .with(query: { access_token: '1', organization_id: '1' })
           .to_return(body: fixture('bulk_tobacco_cessations.json'),
         headers: { content_type: 'application/json; charset=utf-8' })
       end
@@ -34,7 +34,7 @@ describe Validic::REST::TobaccoCessation do
       end
       it 'makes a tobacco_cessation request to the correct url' do
         client.get_tobacco_cessation(user_id: '1')
-        expect(a_get('/organizations/1/users/1/tobacco_cessation.json').with(query: { access_token: '1' })).to have_been_made
+        expect(a_get('/organizations/1/users/1/tobacco_cessation.json').with(query: { access_token: '1', organization_id: '1' })).to have_been_made
       end
     end
   end
@@ -43,7 +43,7 @@ describe Validic::REST::TobaccoCessation do
     before do
       stub_post("/organizations/1/users/1/tobacco_cessation.json")
         .with(body: { tobacco_cessation: { timestamp: '2013-03-10T07:12:16+00:00', activity_id: '12345' },
-                      access_token: '1' }.to_json)
+                      access_token: '1', organization_id: '1' }.to_json)
         .to_return(body: fixture('tobacco_cessation.json'),
           headers: { content_type: 'application/json; charset=utf-8'} )
     end
@@ -52,7 +52,7 @@ describe Validic::REST::TobaccoCessation do
       expect(a_post('/organizations/1/users/1/tobacco_cessation.json')
         .with(body: { tobacco_cessation: { timestamp: '2013-03-10T07:12:16+00:00',
                                    activity_id: '12345' },
-                      access_token: '1' }.to_json)).to have_been_made
+                      access_token: '1', organization_id: '1' }.to_json)).to have_been_made
     end
     it 'returns a TobaccoCessation' do
       tobacco_cessation = client.create_tobacco_cessation(user_id: '1', timestamp: '2013-03-10T07:12:16+00:00', activity_id: '12345')
@@ -65,7 +65,7 @@ describe Validic::REST::TobaccoCessation do
     before do
       stub_put("/organizations/1/users/1/tobacco_cessation/51552cddfded0807c4000096.json")
         .with(body: { tobacco_cessation: { timestamp: '2013-03-10T07:12:16+00:00' },
-                                   access_token: '1' }.to_json)
+                                   access_token: '1', organization_id: '1' }.to_json)
         .to_return(body: fixture('tobacco_cessation.json'),
                    headers: {content_type: 'application/json; charset=utf-8'})
     end
@@ -73,7 +73,8 @@ describe Validic::REST::TobaccoCessation do
       client.update_tobacco_cessation(user_id: '1', _id: '51552cddfded0807c4000096', timestamp: '2013-03-10T07:12:16+00:00')
       expect(a_put('/organizations/1/users/1/tobacco_cessation/51552cddfded0807c4000096.json')
         .with(body: { tobacco_cessation: { timestamp: '2013-03-10T07:12:16+00:00' },
-                      access_token: '1' }.to_json)).to have_been_made
+                      access_token: '1',
+                      organization_id: '1' }.to_json)).to have_been_made
     end
     it 'returns a TobaccoCessation' do
       tobacco_cessation = client.update_tobacco_cessation(user_id: '1', _id: '51552cddfded0807c4000096', timestamp: '2013-03-10T07:12:16+00:00')
@@ -98,7 +99,7 @@ describe Validic::REST::TobaccoCessation do
     context 'with user_id' do
       before do
         stub_get("/organizations/1/users/2/tobacco_cessation/latest.json").
-          with(query: { access_token: '1' }).
+          with(query: { access_token: '1', organization_id: '1' }).
           to_return(body: fixture('tobacco_cessations.json'),
                     headers: { content_type: 'application/json; charset=utf-8' })
       end
@@ -108,13 +109,13 @@ describe Validic::REST::TobaccoCessation do
       end
       it 'builds a latest url' do
         client.latest_tobacco_cessation(user_id: '2')
-        expect(a_get('/organizations/1/users/2/tobacco_cessation/latest.json').with(query: { access_token: '1' })).to have_been_made
+        expect(a_get('/organizations/1/users/2/tobacco_cessation/latest.json').with(query: { access_token: '1', organization_id: '1' })).to have_been_made
       end
     end
     context 'without user_id' do
       before do
         stub_get("/organizations/1/tobacco_cessation/latest.json").
-          with(query: { access_token: '1' }).
+          with(query: { access_token: '1', organization_id: '1' }).
           to_return(body: fixture('tobacco_cessations.json'),
                     headers: { content_type: 'application/json; charset=utf-8' })
       end
@@ -124,7 +125,7 @@ describe Validic::REST::TobaccoCessation do
       end
       it 'builds a latest url' do
         client.latest_tobacco_cessation
-        expect(a_get('/organizations/1/tobacco_cessation/latest.json').with(query: { access_token: '1' })).to have_been_made
+        expect(a_get('/organizations/1/tobacco_cessation/latest.json').with(query: { access_token: '1', organization_id: '1' })).to have_been_made
       end
     end
   end

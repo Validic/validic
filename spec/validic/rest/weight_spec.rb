@@ -7,7 +7,7 @@ describe Validic::REST::Weight do
     context 'no user_id given' do
       before do
         stub_get("/organizations/1/weight.json")
-          .with(query: { access_token: '1' })
+          .with(query: { access_token: '1', organization_id: '1' })
           .to_return(body: fixture('weights.json'),
         headers: { content_type: 'application/json; charset=utf-8' })
       end
@@ -17,13 +17,13 @@ describe Validic::REST::Weight do
       end
       it 'makes a weight request to the correct url' do
         client.get_weight
-        expect(a_get('/organizations/1/weight.json').with(query: { access_token: '1' })).to have_been_made
+        expect(a_get('/organizations/1/weight.json').with(query: { access_token: '1', organization_id: '1' })).to have_been_made
       end
     end
     context 'with user_id' do
       before do
         stub_get("/organizations/1/users/1/weight.json")
-          .with(query: { access_token: '1' })
+          .with(query: { access_token: '1', organization_id: '1' })
           .to_return(body: fixture('weights.json'),
         headers: { content_type: 'application/json; charset=utf-8' })
       end
@@ -33,7 +33,7 @@ describe Validic::REST::Weight do
       end
       it 'makes a weight request to the correct url' do
         client.get_weight(user_id: '1')
-        expect(a_get('/organizations/1/users/1/weight.json').with(query: { access_token: '1' })).to have_been_made
+        expect(a_get('/organizations/1/users/1/weight.json').with(query: { access_token: '1', organization_id: '1' })).to have_been_made
       end
     end
   end
@@ -44,7 +44,7 @@ describe Validic::REST::Weight do
         with(body: { weight: { timestamp: '2013-03-10T07:12:16+00:00',
                                utc_offset: '+00:00', weight: 177,
                                height: 34, data_id: '12345' },
-                               access_token: '1' }.to_json)
+                               access_token: '1', organization_id: '1' }.to_json)
         .to_return(body: fixture('weight.json'),
       headers: { content_type: 'application/json; charset=utf-8'} )
 
@@ -75,7 +75,7 @@ describe Validic::REST::Weight do
                                utc_offset: '+00:00', total_weight: 377,
                                awake: 224, deep: 234, light: 94, rem: 115,
                                times_woken: 4 },
-                               access_token: '1' }.to_json)
+                               access_token: '1', organization_id: '1' }.to_json)
         .to_return(body: fixture('weight.json'),
       headers: {content_type: 'application/json; charset=utf-8'})
 
@@ -118,7 +118,7 @@ describe Validic::REST::Weight do
     context 'with user_id' do
       before do
         stub_get("/organizations/1/users/2/weight/latest.json").
-          with(query: { access_token: '1' }).
+          with(query: { access_token: '1', organization_id: '1' }).
           to_return(body: fixture('weights.json'),
                     headers: { content_type: 'application/json; charset=utf-8' })
           @latest = client.latest_weight(user_id: '2')
@@ -127,13 +127,13 @@ describe Validic::REST::Weight do
         expect(@latest).to be_a Validic::Response
       end
       it 'builds a latest url' do
-        expect(a_get('/organizations/1/users/2/weight/latest.json').with(query: { access_token: '1' })).to have_been_made
+        expect(a_get('/organizations/1/users/2/weight/latest.json').with(query: { access_token: '1', organization_id: '1' })).to have_been_made
       end
     end
     context 'without user_id' do
       before do
         stub_get("/organizations/1/weight/latest.json").
-          with(query: { access_token: '1' }).
+          with(query: { access_token: '1', organization_id: '1' }).
           to_return(body: fixture('weights.json'),
                     headers: { content_type: 'application/json; charset=utf-8' })
           @latest = client.latest_weight
@@ -142,7 +142,7 @@ describe Validic::REST::Weight do
         expect(@latest).to be_a Validic::Response
       end
       it 'builds a latest url' do
-        expect(a_get('/organizations/1/weight/latest.json').with(query: { access_token: '1' })).to have_been_made
+        expect(a_get('/organizations/1/weight/latest.json').with(query: { access_token: '1', organization_id: '1' })).to have_been_made
       end
     end
   end
