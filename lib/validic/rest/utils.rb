@@ -8,7 +8,7 @@ module Validic
 
       def build_response_attr(resp)
         summary = Validic::Summary.new(resp.delete("summary"))
-        Validic::Response.new(summary, response_object(resp))
+        Validic::Response.new(summary, response_object(resp), self)
       end
 
       def response_object(resp)
