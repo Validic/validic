@@ -7,7 +7,7 @@
     "end_date": "2013-03-27T23:59:59+00:00",
     "offset": 0,
     "limit": 100,
-    "previous": "http://api.validic.dev/v1/organizations/1/routine.json?access_token=1&paginated=true&start_date=2013-01-01&page=1",
+    "previous": "https://api.validic.com/v1/organizations/1/routine.json?access_token=1&paginated=true&start_date=2013-01-01&page=1",
     "next": null,
     "params": {
       "start_date": null,
