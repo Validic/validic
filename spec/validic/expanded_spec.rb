@@ -11,7 +11,8 @@ describe 'expanded for all objects' do
         #set up stub request for a create call with extras
         stub_post("/organizations/1/users/1/#{object}.json")
           .with(body: { object.to_sym => { timestamp: '2013-03-10T07:12:16+00:00',
-        activity_id: '12345', extras: "{\"stars\": 3}" }, access_token: '1' }.to_json)
+        activity_id: '12345', extras: "{\"stars\": 3}" }, access_token: '1',
+        organization_id: '1' }.to_json)
           .to_return(body: fixture("#{object}-extras.json"),
         headers: { content_type: 'application/json; charset=utf-8'} )
 
@@ -24,7 +25,7 @@ describe 'expanded for all objects' do
         expect(a_post("/organizations/1/users/1/#{object}.json")
           .with(body: { object.to_sym => { timestamp: '2013-03-10T07:12:16+00:00',
         activity_id: '12345', extras: "{\"stars\": 3}"},
-          access_token: '1' }.to_json)).to have_been_made
+          access_token: '1', organization_id: '1' }.to_json)).to have_been_made
       end
       it 'creates the correct object' do
         klass = Validic.const_get(camelize_response_key(object))
@@ -36,7 +37,7 @@ describe 'expanded for all objects' do
       before do
         stub_put("/organizations/1/users/1/#{object}/51552cddfded0807c4000096.json")
           .with(body: { object.to_sym => { timestamp: '2013-03-10T07:12:16+00:00',
-        extras: "{\"stars\": 3}"}, access_token: '1' }.to_json)
+        extras: "{\"stars\": 3}"}, access_token: '1', organization_id: '1' }.to_json)
           .to_return(body: fixture("#{object}-extras.json"),
         headers: { content_type: 'application/json; charset=utf-8'} )
           @obj = client.send("update_#{object}", user_id: '1', _id: "51552cddfded0807c4000096",
@@ -47,7 +48,7 @@ describe 'expanded for all objects' do
         expect(a_put("/organizations/1/users/1/#{object}/51552cddfded0807c4000096.json")
           .with(body: { object.to_sym => { timestamp: '2013-03-10T07:12:16+00:00',
         extras: "{\"stars\": 3}"},
-          access_token: '1' }.to_json)).to have_been_made
+          access_token: '1', organization_id: '1' }.to_json)).to have_been_made
       end
       it 'returns an object' do
         klass = Validic.const_get(camelize_response_key(object))
@@ -58,7 +59,7 @@ describe 'expanded for all objects' do
     context "#get #{object}" do
       before do
         stub_get("/organizations/1/#{object}.json")
-          .with(query: { access_token: '1', expanded: '1' })
+          .with(query: { access_token: '1', expanded: '1', organization_id: '1' })
           .to_return(body: fixture("#{object}-expanded.json"),
         headers: { content_type: 'application/json; charset=utf-8' })
 
@@ -69,7 +70,7 @@ describe 'expanded for all objects' do
       end
       it 'makes an object URI request with expanded' do
         expect(a_get("/organizations/1/#{object}.json")
-          .with(query: { access_token: '1', expanded: '1' }))
+          .with(query: { access_token: '1', expanded: '1', organization_id: '1' }))
           .to have_been_made
       end
     end
@@ -84,4 +85,3 @@ def camelize_response_key(str)
   key.chop! if %w(Users Apps).include?(key) #strip last letter off to match ::User or ::App
   key
 end
-

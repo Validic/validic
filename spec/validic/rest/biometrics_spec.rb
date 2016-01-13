@@ -8,7 +8,7 @@ describe Validic::REST::Biometrics do
     context 'no user_id given' do
       before do
         stub_get("/organizations/1/biometrics.json")
-          .with(query: { access_token: '1' })
+          .with(query: { access_token: '1', organization_id: '1' })
           .to_return(body: fixture('biometrics_records.json'),
         headers: { content_type: 'application/json; charset=utf-8' })
       end
@@ -18,13 +18,13 @@ describe Validic::REST::Biometrics do
       end
       it 'makes a biometrics request to the correct url' do
         client.get_biometrics
-        expect(a_get('/organizations/1/biometrics.json').with(query: { access_token: '1' })).to have_been_made
+        expect(a_get('/organizations/1/biometrics.json').with(query: { access_token: '1', organization_id: '1' })).to have_been_made
       end
     end
     context 'with user_id' do
       before do
         stub_get("/organizations/1/users/1/biometrics.json")
-          .with(query: { access_token: '1' })
+          .with(query: { access_token: '1', organization_id: '1' })
           .to_return(body: fixture('bulk_biometrics_records.json'),
         headers: { content_type: 'application/json; charset=utf-8' })
       end
@@ -34,7 +34,7 @@ describe Validic::REST::Biometrics do
       end
       it 'makes a biometrics request to the correct url' do
         client.get_biometrics(user_id: '1')
-        expect(a_get('/organizations/1/users/1/biometrics.json').with(query: { access_token: '1' })).to have_been_made
+        expect(a_get('/organizations/1/users/1/biometrics.json').with(query: { access_token: '1', organization_id: '1' })).to have_been_made
       end
     end
   end
@@ -43,7 +43,8 @@ describe Validic::REST::Biometrics do
     before do
       stub_post("/organizations/1/users/1/biometrics.json")
         .with(body: { biometrics: { timestamp: '2013-03-10T07:12:16+00:00', activity_id: '12345' },
-                      access_token: '1' }.to_json)
+                      access_token: '1',
+                      organization_id: '1' }.to_json)
         .to_return(body: fixture('biometrics_record.json'),
           headers: { content_type: 'application/json; charset=utf-8'} )
     end
@@ -51,8 +52,9 @@ describe Validic::REST::Biometrics do
       client.create_biometrics(user_id: '1', timestamp: '2013-03-10T07:12:16+00:00', activity_id: '12345')
       expect(a_post('/organizations/1/users/1/biometrics.json')
         .with(body: { biometrics: { timestamp: '2013-03-10T07:12:16+00:00',
-                                  activity_id: '12345' },
-                      access_token: '1' }.to_json)).to have_been_made
+                                    activity_id: '12345' },
+                      access_token: '1',
+                      organization_id: '1' }.to_json)).to have_been_made
     end
     it 'returns a Biometrics' do
       biometrics_record = client.create_biometrics(user_id: '1', timestamp: '2013-03-10T07:12:16+00:00', activity_id: '12345')
@@ -65,7 +67,8 @@ describe Validic::REST::Biometrics do
     before do
       stub_put("/organizations/1/users/1/biometrics/51552cddfded0807c4000096.json")
         .with(body: { biometrics: { timestamp: '2013-03-10T07:12:16+00:00' },
-                                   access_token: '1' }.to_json)
+                      access_token: '1',
+                      organization_id: '1' }.to_json)
         .to_return(body: fixture('biometrics_record.json'),
                    headers: {content_type: 'application/json; charset=utf-8'})
     end
@@ -73,7 +76,8 @@ describe Validic::REST::Biometrics do
       client.update_biometrics(user_id: '1', _id: '51552cddfded0807c4000096', timestamp: '2013-03-10T07:12:16+00:00')
       expect(a_put('/organizations/1/users/1/biometrics/51552cddfded0807c4000096.json')
         .with(body: { biometrics: { timestamp: '2013-03-10T07:12:16+00:00' },
-                      access_token: '1' }.to_json)).to have_been_made
+                      access_token: '1',
+                      organization_id: '1' }.to_json)).to have_been_made
     end
     it 'returns a Biometrics' do
       biometrics_record = client.update_biometrics(user_id: '1', _id: '51552cddfded0807c4000096', timestamp: '2013-03-10T07:12:16+00:00')
@@ -98,7 +102,7 @@ describe Validic::REST::Biometrics do
     context 'with user_id' do
       before do
         stub_get("/organizations/1/users/2/biometrics/latest.json").
-          with(query: { access_token: '1' }).
+          with(query: { access_token: '1', organization_id: '1' }).
           to_return(body: fixture('biometrics_records.json'),
                     headers: { content_type: 'application/json; charset=utf-8' })
       end
@@ -108,13 +112,13 @@ describe Validic::REST::Biometrics do
       end
       it 'builds a latest url' do
         client.latest_biometrics(user_id: '2')
-        expect(a_get('/organizations/1/users/2/biometrics/latest.json').with(query: { access_token: '1' })).to have_been_made
+        expect(a_get('/organizations/1/users/2/biometrics/latest.json').with(query: { access_token: '1', organization_id: '1' })).to have_been_made
       end
     end
     context 'without user_id' do
       before do
         stub_get("/organizations/1/biometrics/latest.json").
-          with(query: { access_token: '1' }).
+          with(query: { access_token: '1', organization_id: '1' }).
           to_return(body: fixture('biometrics_records.json'),
                     headers: { content_type: 'application/json; charset=utf-8' })
       end
@@ -124,7 +128,7 @@ describe Validic::REST::Biometrics do
       end
       it 'builds a latest url' do
         client.latest_biometrics
-        expect(a_get('/organizations/1/biometrics/latest.json').with(query: { access_token: '1' })).to have_been_made
+        expect(a_get('/organizations/1/biometrics/latest.json').with(query: { access_token: '1', organization_id: '1' })).to have_been_made
       end
     end
   end

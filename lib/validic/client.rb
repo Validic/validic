@@ -66,6 +66,16 @@ module Validic
 
     private
 
+    def overwrite_creds(options = {})
+      return self if options.is_a?(String) || options[:access_token].nil? || options[:organization_id].nil?
+      access_token = options.delete(:access_token) || Validic.access_token
+      organization_id = options.delete(:organization_id) || Validic.organization_id
+      return self if access_token == @access_token && organization_id == @organization_id
+      self.access_token = access_token
+      self.organization_id = organization_id
+      reload_config
+    end
+
     def default_headers
       {
         accept: 'application/json',

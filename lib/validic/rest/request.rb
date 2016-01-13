@@ -76,7 +76,8 @@ module Validic
       end
 
       def request(method, path, options)
-        options[:access_token] = options[:access_token].nil? ? Validic.access_token : options[:access_token]
+        options[:access_token] = options.fetch(:access_token, Validic.access_token)
+        options[:organization_id] = options.fetch(:organization_id, Validic.organization_id)
         response = connection.send(method) do |request|
           case method
           when :get

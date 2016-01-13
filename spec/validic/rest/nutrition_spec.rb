@@ -8,7 +8,7 @@ describe Validic::REST::Nutrition do
     context 'no user_id given' do
       before do
         stub_get("/organizations/1/nutrition.json")
-          .with(query: { access_token: '1' })
+          .with(query: { access_token: '1', organization_id: '1' })
           .to_return(body: fixture('nutritions.json'),
         headers: { content_type: 'application/json; charset=utf-8' })
           @nutrition = client.get_nutrition
@@ -18,14 +18,14 @@ describe Validic::REST::Nutrition do
       end
       it 'makes a nutrition request to the correct url' do
         expect(a_get('/organizations/1/nutrition.json')
-          .with(query: { access_token: '1' }))
+          .with(query: { access_token: '1', organization_id: '1' }))
           .to have_been_made
       end
     end
     context 'with user_id' do
       before do
         stub_get("/organizations/1/users/1/nutrition.json")
-          .with(query: { access_token: '1' })
+          .with(query: { access_token: '1', organization_id: '1' })
           .to_return(body: fixture('bulk_nutritions.json'),
         headers: { content_type: 'application/json; charset=utf-8' })
 
@@ -36,7 +36,7 @@ describe Validic::REST::Nutrition do
       end
       it 'makes a nutrition request to the correct url' do
         expect(a_get('/organizations/1/users/1/nutrition.json')
-          .with(query: { access_token: '1' }))
+          .with(query: { access_token: '1', organization_id: '1' }))
           .to have_been_made
       end
     end
@@ -47,7 +47,9 @@ describe Validic::REST::Nutrition do
       before do
         stub_post("/organizations/1/users/1/nutrition.json")
           .with(body: { nutrition: { timestamp: '2013-03-10T07:12:16+00:00',
-        activity_id: '12345' }, access_token: '1' }.to_json)
+                                     activity_id: '12345' },
+                        access_token: '1',
+                        organization_id: '1'}.to_json)
           .to_return(body: fixture('nutrition.json'),
         headers: { content_type: 'application/json; charset=utf-8'} )
       end
@@ -57,7 +59,7 @@ describe Validic::REST::Nutrition do
         expect(a_post('/organizations/1/users/1/nutrition.json')
           .with(body: { nutrition: { timestamp: '2013-03-10T07:12:16+00:00',
         activity_id: '12345' },
-        access_token: '1' }.to_json)).to have_been_made
+        access_token: '1', organization_id: '1' }.to_json)).to have_been_made
       end
       it 'returns a Nutrition' do
         nutrition = client.create_nutrition(user_id: '1', timestamp: '2013-03-10T07:12:16+00:00',
@@ -73,7 +75,8 @@ describe Validic::REST::Nutrition do
       before do
         stub_put("/organizations/1/users/1/nutrition/51552cddfded0807c4000096.json")
           .with(body: { nutrition: { timestamp: '2013-03-10T07:12:16+00:00' },
-        access_token: '1' }.to_json)
+                access_token: '1',
+                organization_id: '1' }.to_json)
           .to_return(body: fixture('nutrition.json'),
         headers: {content_type: 'application/json; charset=utf-8'})
       end
@@ -82,7 +85,8 @@ describe Validic::REST::Nutrition do
                                 timestamp: '2013-03-10T07:12:16+00:00')
         expect(a_put('/organizations/1/users/1/nutrition/51552cddfded0807c4000096.json')
           .with(body: { nutrition: { timestamp: '2013-03-10T07:12:16+00:00' },
-        access_token: '1' }.to_json)).to have_been_made
+                access_token: '1',
+                organization_id: '1' }.to_json)).to have_been_made
       end
       it 'returns a Nutrition' do
         nutrition = client.update_nutrition(user_id: '1', _id: '51552cddfded0807c4000096',
@@ -109,7 +113,7 @@ describe Validic::REST::Nutrition do
     context 'with user_id' do
       before do
         stub_get("/organizations/1/users/2/nutrition/latest.json").
-          with(query: { access_token: '1' }).
+          with(query: { access_token: '1', organization_id: '1' }).
           to_return(body: fixture('nutritions.json'),
                     headers: { content_type: 'application/json; charset=utf-8' })
       end
@@ -120,13 +124,13 @@ describe Validic::REST::Nutrition do
       it 'builds a latest url' do
         client.latest_nutrition(user_id: '2')
         expect(a_get('/organizations/1/users/2/nutrition/latest.json')
-          .with(query: { access_token: '1' })).to have_been_made
+          .with(query: { access_token: '1', organization_id: '1' })).to have_been_made
       end
     end
     context 'without user_id' do
       before do
         stub_get("/organizations/1/nutrition/latest.json").
-          with(query: { access_token: '1' }).
+          with(query: { access_token: '1', organization_id: '1' }).
           to_return(body: fixture('nutritions.json'),
                     headers: { content_type: 'application/json; charset=utf-8' })
       end
@@ -137,7 +141,7 @@ describe Validic::REST::Nutrition do
       it 'builds a latest url' do
         client.latest_nutrition
         expect(a_get('/organizations/1/nutrition/latest.json')
-          .with(query: { access_token: '1' })).to have_been_made
+          .with(query: { access_token: '1', organization_id: '1' })).to have_been_made
       end
     end
   end

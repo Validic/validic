@@ -7,7 +7,7 @@ describe Validic::REST::Sleep do
     context 'no user_id given' do
       before do
         stub_get("/organizations/1/sleep.json")
-          .with(query: { access_token: '1' })
+          .with(query: { access_token: '1', organization_id: '1' })
           .to_return(body: fixture('sleeps.json'),
         headers: { content_type: 'application/json; charset=utf-8' })
       end
@@ -17,13 +17,13 @@ describe Validic::REST::Sleep do
       end
       it 'makes a sleep request to the correct url' do
         client.get_sleep
-        expect(a_get('/organizations/1/sleep.json').with(query: { access_token: '1' })).to have_been_made
+        expect(a_get('/organizations/1/sleep.json').with(query: { access_token: '1', organization_id: '1' })).to have_been_made
       end
     end
     context 'with user_id' do
       before do
         stub_get("/organizations/1/users/1/sleep.json")
-          .with(query: { access_token: '1' })
+          .with(query: { access_token: '1', organization_id: '1' })
           .to_return(body: fixture('bulk_sleeps.json'),
         headers: { content_type: 'application/json; charset=utf-8' })
       end
@@ -33,7 +33,7 @@ describe Validic::REST::Sleep do
       end
       it 'makes a sleep request to the correct url' do
         client.get_sleep(user_id: '1')
-        expect(a_get('/organizations/1/users/1/sleep.json').with(query: { access_token: '1' })).to have_been_made
+        expect(a_get('/organizations/1/users/1/sleep.json').with(query: { access_token: '1', organization_id: '1' })).to have_been_made
       end
     end
   end
@@ -45,7 +45,7 @@ describe Validic::REST::Sleep do
                               utc_offset: '+00:00', total_sleep: 477,
                               awake: 34, deep: 234, light: 94, rem: 115,
                               times_woken: 4, activity_id: '12345' },
-                              access_token: '1' }.to_json).
+                              access_token: '1', organization_id: '1' }.to_json).
                               to_return(body: fixture('sleep.json'),
                                         headers: { content_type: 'application/json; charset=utf-8'} )
     end
@@ -72,7 +72,8 @@ describe Validic::REST::Sleep do
                               utc_offset: '+00:00', total_sleep: 477,
                               awake: 224, deep: 234, light: 94, rem: 115,
                               times_woken: 4 },
-                              access_token: '1' }.to_json).
+                              access_token: '1',
+                              organization_id: '1' }.to_json).
                               to_return(body: fixture('sleep.json'),
                                         headers: {content_type: 'application/json; charset=utf-8'})
 
@@ -116,7 +117,7 @@ describe Validic::REST::Sleep do
     context 'with user_id' do
       before do
         stub_get("/organizations/1/users/2/sleep/latest.json").
-          with(query: { access_token: '1' }).
+          with(query: { access_token: '1', organization_id: '1' }).
           to_return(body: fixture('sleeps.json'),
                     headers: { content_type: 'application/json; charset=utf-8' })
           @latest = client.latest_sleep(user_id: '2')
@@ -125,13 +126,13 @@ describe Validic::REST::Sleep do
         expect(@latest).to be_a Validic::Response
       end
       it 'builds a latest url' do
-        expect(a_get('/organizations/1/users/2/sleep/latest.json').with(query: { access_token: '1' })).to have_been_made
+        expect(a_get('/organizations/1/users/2/sleep/latest.json').with(query: { access_token: '1', organization_id: '1' })).to have_been_made
       end
     end
     context 'without user_id' do
       before do
         stub_get("/organizations/1/sleep/latest.json").
-          with(query: { access_token: '1' }).
+          with(query: { access_token: '1', organization_id: '1' }).
           to_return(body: fixture('sleeps.json'),
                     headers: { content_type: 'application/json; charset=utf-8' })
           @latest = client.latest_sleep
@@ -140,7 +141,7 @@ describe Validic::REST::Sleep do
         expect(@latest).to be_a Validic::Response
       end
       it 'builds a latest url' do
-        expect(a_get('/organizations/1/sleep/latest.json').with(query: { access_token: '1' })).to have_been_made
+        expect(a_get('/organizations/1/sleep/latest.json').with(query: { access_token: '1', organization_id: '1' })).to have_been_made
       end
     end
   end

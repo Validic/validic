@@ -457,6 +457,13 @@ client.delete_tobacco_cessation(user_id: 'VALIDIC_USER_ID', _id: 'VALIDIC_ACTIVI
 client.create_fitness(user_id: 'VALIDIC_USER_ID', activity_id: 'UNIQUE_ACTIVITY_ID', extras: "{\"stars\": 3}")
 ```
 
+##### Overwrite Client Organization
+```ruby
+# This will assign a new user to the organization_id and access_token set as params
+client.provision_user(organization_id: 'ORGANIZATION_ID', access_token: 'ACCESS_TOKEN')
+# Can be use as well with other methods
+```
+
 ##   [Latest Records](https://validic.com/api/bulkdata/#latest)
 
 ###### You can also pass an options hash to filter latest results
