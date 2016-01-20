@@ -335,6 +335,18 @@ client.get_sleep
 client.get_tobacco_cessations
 ```
 
+##### Get the next page of a Validic::Response
+```ruby
+data = client.get_routine(start_date: '2013-01-01', paginated: "true")
+data.next
+```
+
+##### Get the previous page of a Validic::Response
+```ruby
+data = client.get_routine(start_date: '2013-01-01', paginated: "true", page: 3)
+data.previous
+```
+
 ##   [Validic Connect](https://validic.com/api/partners)
 
 
