@@ -9,11 +9,11 @@ require 'validic/rest/nutrition'
 require 'validic/rest/organizations'
 require 'validic/rest/profile'
 require 'validic/rest/request'
+require 'validic/rest/response'
 require 'validic/rest/routine'
 require 'validic/rest/sleep'
 require 'validic/rest/tobacco_cessation'
 require 'validic/rest/users'
-require 'validic/rest/utils'
 require 'validic/rest/weight'
 require 'validic/version'
 
@@ -27,11 +27,11 @@ module Validic
     include REST::Organizations
     include REST::Profile
     include REST::Request
+    include REST::Response
     include REST::Routine
     include REST::Sleep
     include REST::TobaccoCessation
     include REST::Users
-    include REST::Utils
     include REST::Weight
 
     attr_accessor :api_url,

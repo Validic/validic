@@ -5,8 +5,7 @@ module Validic
     module Fitness
 
       def get_fitness(options = {})
-        resp = get_request(:fitness, options)
-        build_response_attr(resp)
+        build_response(get_request(:fitness, options))
       end
       alias :get_fitnesses :get_fitness
 
@@ -32,8 +31,7 @@ module Validic
       end
 
       def latest_fitness(options = {})
-        resp = latest(:fitness, options)
-        build_response_attr(resp)
+        build_response(latest(:fitness, options))
       end
     end
   end

@@ -4,8 +4,7 @@ module Validic
   module REST
     module Organizations
       def get_organization(params = {})
-        resp = get_request(:organizations, params)
-        build_response_attr(resp)
+        build_response(get_request(:organizations, params))
       end
     end
   end

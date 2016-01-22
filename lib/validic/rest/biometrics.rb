@@ -5,8 +5,7 @@ module Validic
     module Biometrics
 
       def get_biometrics(options = {})
-        resp = get_request(:biometrics, options)
-        build_response_attr(resp)
+        build_response(get_request(:biometrics, options))
       end
 
       def create_biometrics(options = {})
@@ -31,8 +30,7 @@ module Validic
       end
 
       def latest_biometrics(options = {})
-        resp = latest(:biometrics, options)
-        build_response_attr(resp)
+        build_response(latest(:biometrics, options))
       end
     end
   end

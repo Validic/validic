@@ -5,8 +5,7 @@ module Validic
     module Sleep
 
       def get_sleep(options = {})
-        resp = get_request(:sleep, options)
-        build_response_attr(resp)
+        build_response(get_request(:sleep, options))
       end
       alias :get_sleeps :get_sleep
 
@@ -25,8 +24,7 @@ module Validic
       end
 
       def latest_sleep(options = {})
-        resp = latest(:sleep, options)
-        build_response_attr(resp)
+        build_response(latest(:sleep, options))
       end
 
       def delete_sleep(options = {})

@@ -5,8 +5,7 @@ module Validic
     module Routine
 
       def get_routine(params = {})
-        resp = get_request(:routine, params)
-        build_response_attr(resp)
+        build_response(get_request(:routine, params))
       end
       alias :get_routines :get_routine
 
@@ -32,8 +31,7 @@ module Validic
       end
 
       def latest_routine(options = {})
-        resp = latest(:routine, options)
-        build_response_attr(resp)
+        build_response(latest(:routine, options))
       end
     end
   end

@@ -5,8 +5,7 @@ module Validic
     module Users
 
       def get_users(options = {})
-        resp = get_request(:users, options)
-        build_response_attr(resp)
+        build_response(get_request(:users, options))
       end
       alias :get_user :get_users
 

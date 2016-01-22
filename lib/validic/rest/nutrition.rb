@@ -5,8 +5,7 @@ module Validic
     module Nutrition
 
       def get_nutrition(options = {})
-        resp = get_request(:nutrition, options)
-        build_response_attr(resp)
+        build_response(get_request(:nutrition, options))
       end
       alias :get_nutritions :get_nutrition
 
@@ -32,8 +31,7 @@ module Validic
       end
 
       def latest_nutrition(options = {})
-        resp = latest(:nutrition, options)
-        build_response_attr(resp)
+        build_response(latest(:nutrition, options))
       end
     end
   end

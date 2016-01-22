@@ -5,10 +5,8 @@ module Validic
     module Weight
 
       def get_weight(params={})
-        resp = get_request(:weight, params)
-        build_response_attr(resp)
+        build_response(get_request(:weight, params))
       end
-
       alias :get_weights :get_weight
 
       def create_weight(options={})
@@ -34,10 +32,8 @@ module Validic
       end
 
       def latest_weight(options={})
-        resp = latest(:weight, options)
-        build_response_attr(resp)
+        build_response(latest(:weight, options))
       end
-
     end
   end
 end

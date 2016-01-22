@@ -5,8 +5,7 @@ module Validic
     module TobaccoCessation
 
       def get_tobacco_cessation(options = {})
-        resp = get_request(:tobacco_cessation, options)
-        build_response_attr(resp)
+        build_response(get_request(:tobacco_cessation, options))
       end
       alias :get_tobacco_cessations :get_tobacco_cessation
 
@@ -32,8 +31,7 @@ module Validic
       end
 
       def latest_tobacco_cessation(options = {})
-        resp = latest(:tobacco_cessation, options)
-        build_response_attr(resp)
+        build_response(latest(:tobacco_cessation, options))
       end
     end
   end

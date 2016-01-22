@@ -6,14 +6,14 @@ module Validic
 
       def get_org_apps(params = {})
         resp = get_request(:apps, params)
-        build_response_attr(resp)
+        Validic::Response.new(resp)
       end
       alias :get_apps :get_org_apps
 
       def get_user_synced_apps(options = {})
         resp = get_request(:sync_apps,
                            authentication_token: options[:authentication_token])
-        build_response_attr(resp)
+        Validic::Response.new(resp)
       end
       alias :get_synced_apps :get_user_synced_apps
     end

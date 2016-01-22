@@ -5,8 +5,7 @@ module Validic
     module Diabetes
 
       def get_diabetes(options = {})
-        resp = get_request(:diabetes, options)
-        build_response_attr(resp)
+        build_response(get_request(:diabetes, options))
       end
 
       def create_diabetes(options = {})
@@ -31,8 +30,7 @@ module Validic
       end
 
       def latest_diabetes(options = {})
-        resp = latest(:diabetes, options)
-        build_response_attr(resp)
+        build_response(latest(:diabetes, options))
       end
     end
   end
