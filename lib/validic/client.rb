@@ -33,7 +33,7 @@ module Validic
     include REST::TobaccoCessation
     include REST::Users
     include REST::Weight
-
+    require 'validic/rails/railtie'
     attr_accessor :api_url,
       :api_version,
       :access_token,
@@ -44,11 +44,13 @@ module Validic
     #
     # @params options[Hash]
     def initialize(options={})
-      @api_url          = options.fetch(:api_url, 'https://api.validic.com')
-      @api_version      = options.fetch(:api_version, 'v1')
-      @access_token     = options.fetch(:access_token, Validic.access_token)
-      @organization_id  = options.fetch(:organization_id, Validic.organization_id)
-      reload_config
+      if (Validic.api_url.nil? || Validic.api_version.nil? || Validic.access_token.nil? || Validic.organization_id.nil?)
+        @api_url          = options.fetch(:api_url, 'https://api.validic.com')
+        @api_version      = options.fetch(:api_version, 'v1')
+        @access_token     = options.fetch(:access_token, Validic.access_token)
+        @organization_id  = options.fetch(:organization_id, Validic.organization_id)
+        reload_config
+      end
     end
 
     ##
@@ -56,7 +58,7 @@ module Validic
     #
     # @return [Faraday::Connection]
     def connection
-      Faraday.new(url: @api_url, headers: default_headers, ssl: { verify: true }) do |faraday|
+      Faraday.new(url: Validic.api_url, headers: default_headers, ssl: { verify: true }) do |faraday|
         # faraday.use FaradayMiddleware::Mashify
         faraday.use FaradayMiddleware::ParseJson, content_type: /\bjson$/
         faraday.use FaradayMiddleware::FollowRedirects
@@ -75,10 +77,10 @@ module Validic
     end
 
     def reload_config
-      Validic.api_url = api_url
-      Validic.api_version = api_version
-      Validic.access_token = access_token
-      Validic.organization_id = organization_id
+      Validic.api_url = @api_url
+      Validic.api_version = @api_version
+      Validic.access_token = @access_token
+      Validic.organization_id = @organization_id
     end
   end
 end
