@@ -63,7 +63,8 @@ Or install it yourself as:
 ## Usage
 
 ##### Rails 3+
-First, instantiate the client.
+First, instantiate the client via initializers or railtie
+######Initializers
 ```ruby
 require 'validic'
 
@@ -75,10 +76,36 @@ Validic.configure do |config|
   config.organization_id  = 'ORGANIZATION_ID'
 end
 
-# Create a Client Object provided you have an initializer
-client = Validic::Client.new
+```
+######Railtie
+```ruby
+
+# config/validic.yml
+aliases: &common_config
+  api_url: 'https://api.validic.com'
+  api_version: 'v1'
+
+development:
+  << : *common_config
+  validic_acess_token: <%= 'ORGANIZATION_ACCESS_TOKEN' %>
+  validic_organisation_id: <%= 'ORGANIZATION_ID' %>
+
+test:
+  << : *common_config
+  validic_acess_token: <%= 'ORGANIZATION_ACCESS_TOKEN' %>
+  validic_organisation_id: <%= 'ORGANIZATION_ID' %>
+
+production:
+  << : *common_config
+  validic_acess_token: <%= 'ORGANIZATION_ACCESS_TOKEN' %>
+  validic_organisation_id: <%= 'ORGANIZATION_ID' %>
+
 ```
 
+```
+# Create a Client Object provided you have an initializer or validic.yml
+client = Validic::Client.new
+```
 ##### Plain ruby
 ```ruby
 
