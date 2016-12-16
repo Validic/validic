@@ -20,6 +20,18 @@ describe Validic::Client do
       expect(client.organization_id).to eq 1
     end
 
+    it 'overrides default url and api_key' do
+      Validic.configure do |config|
+        config.api_url = 'http://test.example.com'
+        config.api_version = 'v2'
+      end
+
+      client = Validic::Client.new
+
+      expect(client.api_url).to eq 'http://test.example.com'
+      expect(client.api_version).to eq 'v2'
+    end
+
     it 'uses options' do
       opts = {
                 api_url: 'http://test.example.com',
@@ -34,6 +46,13 @@ describe Validic::Client do
       expect(client.api_version).to eq 'v2'
       expect(client.access_token).to eq 'abcd'
       expect(client.organization_id).to eq 2
+    end
+
+    it 'options uses defaults' do
+      client = Validic::Client.new({})
+
+      expect(client.api_url).to eq 'https://api.validic.com'
+      expect(client.api_version).to eq 'v1'
     end
   end
 

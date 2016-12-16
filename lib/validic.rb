@@ -16,5 +16,13 @@ module Validic
       yield self
       true
     end
+
+    def api_url
+      @api_url ||= "https://api.validic.com"
+    end
+
+    def api_version
+      @api_version ||= "v1"
+    end
   end
 end

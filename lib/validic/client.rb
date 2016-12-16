@@ -44,8 +44,8 @@ module Validic
     #
     # @params options[Hash]
     def initialize(options={})
-      @api_url          = options.fetch(:api_url, 'https://api.validic.com')
-      @api_version      = options.fetch(:api_version, 'v1')
+      @api_url          = options.fetch(:api_url, Validic.api_url)
+      @api_version      = options.fetch(:api_version, Validic.api_version)
       @access_token     = options.fetch(:access_token, Validic.access_token)
       @organization_id  = options.fetch(:organization_id, Validic.organization_id)
       reload_config
